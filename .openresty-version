@@ -1,0 +1,8 @@
+# OpenResty version reference (informational)
+# This project is compatible with OpenResty but NOT required
+# It works with any Nginx + lua module
+#
+# For reference:
+# OpenResty: 1.21.4.1+
+# Nginx module: ngx_lua 0.10.20+
+# Lua: 5.1, 5.2, 5.3

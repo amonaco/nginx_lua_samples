@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  nginx:
+    build: .
+    container_name: nginx_lua_samples
+    ports:
+      - "80:80"
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      SCRIPT_PATH: /usr/local/nginx/lib
+    depends_on:
+      - redis
+    volumes:
+      - ./lib:/usr/local/nginx/lib:ro
+      - ./conf:/usr/local/nginx/conf:ro
+      - ./t:/usr/local/nginx/t:ro
+      - ./scripts:/usr/local/nginx/scripts:ro
+      - nginx_logs:/var/log/nginx
+    networks:
+      - lua_net
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis_samples
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - lua_net
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  redis_data:
+  nginx_logs:
+
+networks:
+  lua_net:
+    driver: bridge
